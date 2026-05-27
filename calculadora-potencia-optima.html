@@ -7,10 +7,13 @@
 <style>
 :root{--accent:#c9762a;--accent2:#f0a64a;--bg:#faf9f7;--card:#fff;--border:#e8e3db;--ink:#1a1a2e;--muted:#6b7280}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Georgia',serif;background:var(--bg);color:var(--ink);padding:1rem}
-.label{font-size:.75rem;font-family:system-ui,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;display:block}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:400;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-regular.woff2') format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:500;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-500.woff2') format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:700;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-700.woff2') format('woff2')}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--ink);padding:1rem}
+.label{font-size:.75rem;;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;display:block}
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
-.card-title{font-size:.78rem;font-weight:700;font-family:system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.9rem}
+.card-title{font-size:.78rem;font-weight:700;;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.9rem}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
 .item{display:flex;align-items:center;gap:.55rem;padding:.55rem .65rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s;user-select:none}
 .item:hover{border-color:var(--accent);background:#fff8f3}
@@ -18,26 +21,26 @@ body{font-family:'Georgia',serif;background:var(--bg);color:var(--ink);padding:1
 .item input{display:none}
 .item-icon{font-size:1.2rem;line-height:1;flex-shrink:0}
 .item-info{flex:1;min-width:0}
-.item-name{font-size:.78rem;font-weight:600;font-family:system-ui,sans-serif;line-height:1.2}
-.item-w{font-size:.7rem;color:var(--muted);font-family:system-ui,sans-serif}
+.item-name{font-size:.78rem;font-weight:600;;line-height:1.2}
+.item-w{font-size:.7rem;color:var(--muted);}
 .check{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s}
 .item.checked .check{background:var(--accent);border-color:var(--accent)}
-.item.checked .check::after{content:'✓';color:#fff;font-size:.65rem;font-family:system-ui,sans-serif;font-weight:700}
+.item.checked .check::after{content:'✓';color:#fff;font-size:.65rem;;font-weight:700}
 .result{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;padding:1.25rem;margin-bottom:.75rem;text-align:center}
-.result-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.8);font-family:system-ui,sans-serif;margin-bottom:.3rem}
+.result-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.8);;margin-bottom:.3rem}
 .result-num{font-size:2.2rem;font-weight:700;color:#fff}
-.result-sub{font-size:.78rem;color:rgba(255,255,255,.85);font-family:system-ui,sans-serif;margin-top:.2rem}
+.result-sub{font-size:.78rem;color:rgba(255,255,255,.85);;margin-top:.2rem}
 .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:.75rem}
 .tier{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:.5rem .3rem;text-align:center;transition:border-color .2s,background .2s}
 .tier.active{border-color:var(--accent);background:#fff3e8}
 .tier.recommended{border-color:var(--accent);background:var(--accent)}
-.tier-kw{font-size:.82rem;font-weight:700;font-family:system-ui,sans-serif}
+.tier-kw{font-size:.82rem;font-weight:700;}
 .tier.recommended .tier-kw{color:#fff}
-.tier-label{font-size:.6rem;font-family:system-ui,sans-serif;color:var(--muted);margin-top:.15rem}
+.tier-label{font-size:.6rem;;color:var(--muted);margin-top:.15rem}
 .tier.recommended .tier-label{color:rgba(255,255,255,.85)}
-.info-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.78rem;font-family:system-ui,sans-serif;color:var(--ink);line-height:1.5}
+.info-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.78rem;;color:var(--ink);line-height:1.5}
 .info-box b{color:var(--accent)}
-footer{text-align:center;font-size:.68rem;color:var(--muted);font-family:system-ui,sans-serif;margin-top:.5rem}
+footer{text-align:center;font-size:.68rem;color:var(--muted);;margin-top:.5rem}
 @media(max-width:420px){.grid{grid-template-columns:1fr}.tiers{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
@@ -90,23 +93,17 @@ var checked={};
 
 var grid=document.getElementById('appGrid');
 appliances.forEach(function(a,i){
-  var div=document.createElement('label');
+  var div=document.createElement('div');
   div.className='item';
-  div.innerHTML='<input type="checkbox" onchange="toggle('+i+')"><span class="item-icon">'+a.icon+'</span><span class="item-info"><span class="item-name">'+a.name+'</span><span class="item-w">'+a.w.toLocaleString('es-ES')+' W</span></span><span class="check"></span>';
-  div.querySelector('input').addEventListener('change',function(){toggle(i,this.checked,div);});
-  div.addEventListener('click',function(e){if(e.target.tagName!=='INPUT'){var inp=div.querySelector('input');inp.checked=!inp.checked;toggle(i,inp.checked,div);}});
+  div.innerHTML='<span class="item-icon">'+a.icon+'</span><span class="item-info"><span class="item-name">'+a.name+'</span><span class="item-w">'+a.w.toLocaleString('es-ES')+' W</span></span><span class="check"></span>';
+  div.addEventListener('click',function(){
+    var val=!checked[i];
+    checked[i]=val;
+    div.classList.toggle('checked',val);
+    calc();
+  });
   grid.appendChild(div);
 });
-
-function toggle(i,val,el){
-  checked[i]=val;
-  // re-sync all visuals
-  var items=document.querySelectorAll('.item');
-  items.forEach(function(it,idx){
-    if(checked[idx])it.classList.add('checked');else it.classList.remove('checked');
-  });
-  calc();
-}
 
 function calc(){
   var sel=appliances.filter(function(a,i){return checked[i];});
