@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculadora de Cobertura de Seguro de Vida</title>
+<style>
+:root{--accent:#c9762a;--accent2:#f0a64a;--bg:#faf9f7;--card:#fff;--border:#e8e3db;--ink:#1a1a2e;--muted:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:var(--bg);color:var(--ink);padding:1rem}
+.label{font-size:.75rem;font-family:system-ui,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
+.card-title{font-size:.78rem;font-weight:700;font-family:system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.9rem}
+.field{margin-bottom:1rem}.field:last-child{margin-bottom:0}
+.lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.lbl strong{font-size:.85rem;font-weight:600;font-family:system-ui,sans-serif}
+.val{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.2rem .55rem;font-size:.85rem;font-weight:700;color:var(--accent);min-width:80px;text-align:right;font-family:system-ui,sans-serif}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer;display:block}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 1px 4px rgba(201,118,42,.4);cursor:pointer;transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #fff;cursor:pointer}
+.ticks{display:flex;justify-content:space-between;margin-top:.3rem}
+.ticks span{font-size:.68rem;color:var(--muted);font-family:system-ui,sans-serif}
+.result-main{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;padding:1.25rem;margin-bottom:.75rem;text-align:center}
+.result-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.8);font-family:system-ui,sans-serif;margin-bottom:.3rem}
+.result-num{font-size:2.2rem;font-weight:700;color:#fff}
+.result-sub{font-size:.78rem;color:rgba(255,255,255,.85);font-family:system-ui,sans-serif;margin-top:.25rem}
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.75rem}
+.bk-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem}
+.bk-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-family:system-ui,sans-serif;margin-bottom:.2rem}
+.bk-val{font-size:1rem;font-weight:700;font-family:system-ui,sans-serif}
+.risk-wrap{margin-bottom:.75rem}
+.risk-pills{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.pill{padding:.3rem .75rem;border-radius:20px;font-size:.75rem;font-weight:600;font-family:system-ui,sans-serif;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;user-select:none}
+.pill.sel-low{background:#dcfce7;border-color:#16a34a;color:#15803d}
+.pill.sel-med{background:#fef9c3;border-color:#ca8a04;color:#92400e}
+.pill.sel-high{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.info-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.78rem;font-family:system-ui,sans-serif;color:var(--ink);line-height:1.6}
+.info-box b{color:var(--accent)}
+footer{text-align:center;font-size:.68rem;color:var(--muted);font-family:system-ui,sans-serif;margin-top:.5rem}
+@media(max-width:400px){.breakdown{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<span class="label">Calculadora de cobertura de seguro de vida</span>
+
+<div class="card">
+  <div class="card-title">Tu situación económica</div>
+  <div class="field">
+    <div class="lbl"><strong>Ingresos netos anuales</strong><span class="val" id="vIngresos">30.000 €</span></div>
+    <input type="range" id="ingresos" min="10000" max="150000" step="1000" value="30000" oninput="calc()">
+    <div class="ticks"><span>10.000 €</span><span>150.000 €</span></div>
+  </div>
+  <div class="field">
+    <div class="lbl"><strong>Años hasta la jubilación</strong><span class="val" id="vAnios">25 años</span></div>
+    <input type="range" id="anios" min="1" max="40" step="1" value="25" oninput="calc()">
+    <div class="ticks"><span>1 año</span><span>40 años</span></div>
+  </div>
+  <div class="field">
+    <div class="lbl"><strong>Hipoteca u otras deudas</strong><span class="val" id="vDeuda">120.000 €</span></div>
+    <input type="range" id="deuda" min="0" max="600000" step="5000" value="120000" oninput="calc()">
+    <div class="ticks"><span>0 €</span><span>600.000 €</span></div>
+  </div>
+  <div class="field">
+    <div class="lbl"><strong>Hijos dependientes</strong><span class="val" id="vHijos">1 hijo</span></div>
+    <input type="range" id="hijos" min="0" max="6" step="1" value="1" oninput="calc()">
+    <div class="ticks"><span>0</span><span>6</span></div>
+  </div>
+</div>
+
+<div class="result-main">
+  <div class="result-label">Capital asegurado recomendado</div>
+  <div class="result-num" id="rCapital">—</div>
+  <div class="result-sub" id="rSub">—</div>
+</div>
+
+<div class="breakdown">
+  <div class="bk-box"><div class="bk-label">Sustitución de ingresos</div><div class="bk-val" id="bkIngresos">—</div></div>
+  <div class="bk-box"><div class="bk-label">Cancelación de deudas</div><div class="bk-val" id="bkDeuda">—</div></div>
+  <div class="bk-box"><div class="bk-label">Fondo educativo hijos</div><div class="bk-val" id="bkHijos">—</div></div>
+  <div class="bk-box"><div class="bk-label">Prima anual estimada</div><div class="bk-val" id="bkPrima">—</div></div>
+</div>
+
+<div class="card">
+  <div class="info-box" id="infoBox">—</div>
+</div>
+
+<footer>Estimación orientativa · Consulta con un corredor de seguros para una valoración personalizada</footer>
+
+<script>
+function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})+' €'}
+function updTrack(el){
+  var pct=(+el.value - +el.min)/(+el.max - +el.min)*100;
+  el.style.background='linear-gradient(to right,#c9762a '+pct+'%,#e8e3db '+pct+'%)';
+}
+function calc(){
+  var ing=+document.getElementById('ingresos').value;
+  var anios=+document.getElementById('anios').value;
+  var deuda=+document.getElementById('deuda').value;
+  var hijos=+document.getElementById('hijos').value;
+
+  // Components
+  var compIngresos=ing*Math.min(anios,20)*0.7; // replace 70% income, max 20 years
+  var compDeuda=deuda;
+  var compHijos=hijos*30000; // 30k per child for education
+  var total=compIngresos+compDeuda+compHijos;
+
+  // Round to nearest 10k
+  total=Math.ceil(total/10000)*10000;
+
+  // Estimated annual premium: ~0.15% of capital for 40yo, simplified
+  var prima=Math.round(total*0.0015/10)*10;
+
+  document.getElementById('vIngresos').textContent=ing.toLocaleString('es-ES')+' €';
+  document.getElementById('vAnios').textContent=anios+(anios===1?' año':' años');
+  document.getElementById('vDeuda').textContent=deuda.toLocaleString('es-ES')+' €';
+  document.getElementById('vHijos').textContent=hijos+(hijos===1?' hijo':' hijos');
+  document.getElementById('rCapital').textContent=fmt(total);
+  document.getElementById('rSub').textContent='Suma asegurada orientativa para tu perfil';
+  document.getElementById('bkIngresos').textContent=fmt(compIngresos);
+  document.getElementById('bkDeuda').textContent=fmt(compDeuda);
+  document.getElementById('bkHijos').textContent=fmt(compHijos);
+  document.getElementById('bkPrima').textContent='~'+fmt(prima)+'/año';
+
+  var nivel=total<100000?'básico':total<300000?'medio':'alto';
+  var msgs={
+    'básico':'Con una cobertura de <b>'+fmt(total)+'</b> cubrirías las necesidades esenciales de tu familia. Si tienes pocos dependientes o deudas, puede ser suficiente.',
+    'medio':'Una cobertura de <b>'+fmt(total)+'</b> es adecuada para tu situación. Cubre la hipoteca, el fondo educativo de tus hijos y mantiene el nivel de vida familiar durante años.',
+    'alto':'Tu perfil requiere una cobertura elevada de <b>'+fmt(total)+'</b>. Compara varias aseguradoras, ya que la prima puede variar significativamente entre compañías.'
+  };
+  document.getElementById('infoBox').innerHTML=msgs[nivel];
+
+  ['ingresos','anios','deuda','hijos'].forEach(function(id){updTrack(document.getElementById(id));});
+}
+calc();
+</script>
+</body>
+</html>
