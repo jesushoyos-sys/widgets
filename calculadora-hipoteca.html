@@ -5,130 +5,98 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Calculadora de Hipoteca</title>
 <style>
-:root{--ink:#1a1a2e;--muted:#6b7280;--accent:#c9762a;--accent2:#f0a64a;--bg:#faf9f7;--card:#ffffff;--border:#e8e3db;--radius:12px}
+:root{--accent:#c9762a;--accent2:#f0a64a;--bg:#faf9f7;--card:#ffffff;--border:#e8e3db;--ink:#1a1a2e;--muted:#6b7280}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Georgia',serif;background:var(--bg);color:var(--ink);padding:1.5rem 1rem;min-height:100vh}
-.wrap{max-width:520px;margin:0 auto}
-h1{font-size:1.35rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.25rem}
-.sub{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;font-family:system-ui,sans-serif}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.field{margin-bottom:1.1rem}
-.field:last-child{margin-bottom:0}
-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem}
-label span{font-size:.78rem;font-family:system-ui,sans-serif;color:var(--muted)}
-label strong{font-size:.88rem;font-weight:600;font-family:system-ui,sans-serif}
-.val{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.25rem .6rem;font-size:.88rem;font-weight:700;color:var(--accent);min-width:90px;text-align:right;font-family:system-ui,sans-serif}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid white;box-shadow:0 1px 4px rgba(201,118,42,.4);cursor:pointer;transition:transform .15s}
+body{font-family:'Georgia',serif;background:var(--bg);color:var(--ink);padding:1rem}
+.label{font-size:.75rem;font-family:system-ui,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.75rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.field{margin-bottom:1rem}.field:last-child{margin-bottom:0}
+.lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.lbl strong{font-size:.85rem;font-weight:600;font-family:system-ui,sans-serif}
+.val{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.2rem .55rem;font-size:.85rem;font-weight:700;color:var(--accent);min-width:88px;text-align:right;font-family:system-ui,sans-serif}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none;cursor:pointer;display:block}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 1px 4px rgba(201,118,42,.4);cursor:pointer;transition:transform .15s}
 input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
-input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid white;cursor:pointer}
-.track{position:relative;margin-top:.3rem}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #fff;cursor:pointer}
 .ticks{display:flex;justify-content:space-between;margin-top:.3rem}
 .ticks span{font-size:.68rem;color:var(--muted);font-family:system-ui,sans-serif}
-.results{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
-.res-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;text-align:center}
-.res-box.main{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;grid-column:1/-1}
-.res-box.main .lbl{color:rgba(255,255,255,.8)}
-.res-box.main .num{color:#fff;font-size:2rem}
-.lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-family:system-ui,sans-serif;margin-bottom:.25rem}
-.num{font-size:1.25rem;font-weight:700;letter-spacing:-.02em}
-.bar-wrap{margin-top:.25rem}
-.bar-bg{background:var(--border);border-radius:4px;height:8px;overflow:hidden;margin:.4rem 0}
-.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease}
-.bar-leg{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);font-family:system-ui,sans-serif}
-.bar-leg b{color:var(--ink)}
-footer{text-align:center;font-size:.7rem;color:var(--muted);font-family:system-ui,sans-serif;margin-top:.5rem}
-@media(max-width:400px){.results{grid-template-columns:1fr}.res-box.main{grid-column:auto}}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.75rem}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;text-align:center}
+.box.main{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;grid-column:1/-1}
+.box.main .rlbl{color:rgba(255,255,255,.8)}
+.box.main .num{color:#fff;font-size:1.85rem}
+.rlbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-family:system-ui,sans-serif;margin-bottom:.2rem}
+.num{font-size:1.15rem;font-weight:700}
+.barlbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-family:system-ui,sans-serif;margin-bottom:.4rem}
+.barbg{background:var(--border);border-radius:4px;height:7px;overflow:hidden;margin-bottom:.4rem}
+.barfill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease}
+.barleg{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);font-family:system-ui,sans-serif}
+.barleg b{color:var(--ink)}
+footer{text-align:center;font-size:.68rem;color:var(--muted);font-family:system-ui,sans-serif;margin-top:.5rem}
+@media(max-width:400px){.results{grid-template-columns:1fr}.box.main{grid-column:auto}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Calculadora de Hipoteca</h1>
-  <p class="sub">Calcula tu cuota mensual al instante</p>
+<span class="label">Calculadora de hipoteca</span>
 
-  <div class="card">
-    <div class="field">
-      <label><strong>Importe del préstamo</strong><span class="val" id="vImporte">150.000 €</span></label>
-      <div class="track">
-        <input type="range" id="importe" min="30000" max="800000" step="5000" value="150000" oninput="calc()">
-        <div class="ticks"><span>30k €</span><span>800k €</span></div>
-      </div>
-    </div>
-    <div class="field">
-      <label><strong>Tipo de interés anual</strong><span class="val" id="vTipo">3,50 %</span></label>
-      <div class="track">
-        <input type="range" id="tipo" min="0.5" max="8" step="0.05" value="3.5" oninput="calc()">
-        <div class="ticks"><span>0,5 %</span><span>8 %</span></div>
-      </div>
-    </div>
-    <div class="field">
-      <label><strong>Plazo</strong><span class="val" id="vPlazo">25 años</span></label>
-      <div class="track">
-        <input type="range" id="plazo" min="5" max="40" step="1" value="25" oninput="calc()">
-        <div class="ticks"><span>5 años</span><span>40 años</span></div>
-      </div>
-    </div>
+<div class="card">
+  <div class="field">
+    <div class="lbl"><strong>Importe del préstamo</strong><span class="val" id="vImporte">150.000 €</span></div>
+    <input type="range" id="importe" min="30000" max="800000" step="5000" value="150000" oninput="calc()">
+    <div class="ticks"><span>30.000 €</span><span>800.000 €</span></div>
   </div>
-
-  <div class="results">
-    <div class="res-box main">
-      <div class="lbl">Cuota mensual</div>
-      <div class="num" id="rCuota">—</div>
-    </div>
-    <div class="res-box">
-      <div class="lbl">Total pagado</div>
-      <div class="num" id="rTotal">—</div>
-    </div>
-    <div class="res-box">
-      <div class="lbl">Total intereses</div>
-      <div class="num" id="rIntereses">—</div>
-    </div>
+  <div class="field">
+    <div class="lbl"><strong>Tipo de interés anual</strong><span class="val" id="vTipo">3,50 %</span></div>
+    <input type="range" id="tipo" min="0.5" max="8" step="0.05" value="3.5" oninput="calc()">
+    <div class="ticks"><span>0,5 %</span><span>8 %</span></div>
   </div>
-
-  <div class="card">
-    <div class="lbl">Capital vs. Intereses</div>
-    <div class="bar-wrap">
-      <div class="bar-bg"><div class="bar-fill" id="barFill" style="width:70%"></div></div>
-      <div class="bar-leg"><span><b id="pCapital">—</b> capital</span><span><b id="pIntereses">—</b> intereses</span></div>
-    </div>
+  <div class="field">
+    <div class="lbl"><strong>Plazo</strong><span class="val" id="vPlazo">25 años</span></div>
+    <input type="range" id="plazo" min="5" max="40" step="1" value="25" oninput="calc()">
+    <div class="ticks"><span>5 años</span><span>40 años</span></div>
   </div>
-
-  <footer>Cálculo orientativo · Sistema francés (cuota constante)</footer>
 </div>
 
+<div class="results">
+  <div class="box main"><div class="rlbl">Cuota mensual</div><div class="num" id="rCuota">—</div></div>
+  <div class="box"><div class="rlbl">Total pagado</div><div class="num" id="rTotal">—</div></div>
+  <div class="box"><div class="rlbl">Total intereses</div><div class="num" id="rIntereses">—</div></div>
+</div>
+
+<div class="card">
+  <div class="barlbl">Capital vs. Intereses</div>
+  <div class="barbg"><div class="barfill" id="barFill"></div></div>
+  <div class="barleg"><span><b id="pCap">—</b> capital</span><span><b id="pInt">—</b> intereses</span></div>
+</div>
+
+<footer>Cálculo orientativo · Sistema francés (cuota constante)</footer>
+
 <script>
-const fmt=n=>n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})+'&nbsp;€';
-const fmtK=n=>n>=1000?Math.round(n/1000)+'k €':fmt(n);
+function fmt(n){return n.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:0})+' €'}
+function updTrack(el){
+  var pct=(+el.value - +el.min)/(+el.max - +el.min)*100;
+  el.style.background='linear-gradient(to right,#c9762a '+pct+'%,#e8e3db '+pct+'%)';
+}
 function calc(){
-  const P=+document.getElementById('importe').value;
-  const r=+document.getElementById('tipo').value/100/12;
-  const n=+document.getElementById('plazo').value*12;
-  document.getElementById('vImporte').textContent=fmtK(P)+' €'.replace('€ €','€');
+  var P=+document.getElementById('importe').value;
+  var r=+document.getElementById('tipo').value/100/12;
+  var anios=+document.getElementById('plazo').value;
+  var n=anios*12;
+  document.getElementById('vImporte').textContent=P.toLocaleString('es-ES')+' €';
   document.getElementById('vTipo').textContent=(+document.getElementById('tipo').value).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' %';
-  document.getElementById('vPlazo').textContent=document.getElementById('plazo').value+' años';
-  // Fix display values
-  document.getElementById('vImporte').innerHTML=P>=1000?Math.round(P/1000).toLocaleString('es-ES')+'.000 €':P.toLocaleString('es-ES')+' €';
-  const cuota=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
-  const total=cuota*n;
-  const intereses=total-P;
-  const pCap=Math.round(P/total*100);
-  document.getElementById('rCuota').innerHTML=cuota.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
-  document.getElementById('rTotal').innerHTML=fmt(Math.round(total));
-  document.getElementById('rIntereses').innerHTML=fmt(Math.round(intereses));
+  document.getElementById('vPlazo').textContent=anios+' años';
+  var cuota=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+  var total=cuota*n;
+  var intereses=total-P;
+  var pCap=Math.round(P/total*100);
+  document.getElementById('rCuota').textContent=cuota.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  document.getElementById('rTotal').textContent=fmt(Math.round(total));
+  document.getElementById('rIntereses').textContent=fmt(Math.round(intereses));
   document.getElementById('barFill').style.width=pCap+'%';
-  document.getElementById('pCapital').textContent=pCap+'%';
-  document.getElementById('pIntereses').textContent=(100-pCap)+'%';
+  document.getElementById('pCap').textContent=pCap+'%';
+  document.getElementById('pInt').textContent=(100-pCap)+'%';
+  ['importe','tipo','plazo'].forEach(function(id){updTrack(document.getElementById(id));});
 }
-// Fix range track fill color
-function updateTrack(el){
-  const min=+el.min,max=+el.max,val=+el.value;
-  const pct=(val-min)/(max-min)*100;
-  el.style.background=`linear-gradient(to right,var(--accent) ${pct}%,var(--border) ${pct}%)`;
-}
-document.querySelectorAll('input[type=range]').forEach(el=>{
-  el.addEventListener('input',()=>updateTrack(el));
-  updateTrack(el);
-});
 calc();
 </script>
 </body>
