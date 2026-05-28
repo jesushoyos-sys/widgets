@@ -5,56 +5,57 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Calculadora de Potencia Óptima</title>
 <style>
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:400;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-regular.woff2') format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:600;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-600.woff2') format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-weight:700;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-700.woff2') format('woff2')}
 :root{--accent:#c9762a;--accent2:#f0a64a;--bg:#faf9f7;--card:#fff;--border:#e8e3db;--ink:#1a1a2e;--muted:#6b7280}
 *{box-sizing:border-box;margin:0;padding:0}
-@font-face{font-family:'Montserrat';font-style:normal;font-weight:400;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-regular.woff2') format('woff2')}
-@font-face{font-family:'Montserrat';font-style:normal;font-weight:500;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-500.woff2') format('woff2')}
-@font-face{font-family:'Montserrat';font-style:normal;font-weight:700;font-display:swap;src:url('https://roams.es/assets/fonts/montserrat/montserrat-v25-latin-700.woff2') format('woff2')}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--ink);padding:1rem}
-.label{font-size:.75rem;;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1rem;display:block}
+.label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.4rem;display:block}
+.hint{font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.5}
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:.75rem}
-.card-title{font-size:.78rem;font-weight:700;;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.9rem}
+.card-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.9rem}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
 .item{display:flex;align-items:center;gap:.55rem;padding:.55rem .65rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .15s,background .15s;user-select:none}
 .item:hover{border-color:var(--accent);background:#fff8f3}
 .item.checked{border-color:var(--accent);background:#fff3e8}
-.item input{display:none}
-.item-icon{font-size:1.2rem;line-height:1;flex-shrink:0}
+.item-icon{font-size:1.1rem;line-height:1;flex-shrink:0}
 .item-info{flex:1;min-width:0}
-.item-name{font-size:.78rem;font-weight:600;;line-height:1.2}
-.item-w{font-size:.7rem;color:var(--muted);}
+.item-name{font-size:.75rem;font-weight:600;line-height:1.2}
+.item-w{font-size:.68rem;color:var(--muted)}
 .check{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s}
 .item.checked .check{background:var(--accent);border-color:var(--accent)}
-.item.checked .check::after{content:'✓';color:#fff;font-size:.65rem;;font-weight:700}
+.item.checked .check::after{content:'✓';color:#fff;font-size:.65rem;font-weight:700}
 .result{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;padding:1.25rem;margin-bottom:.75rem;text-align:center}
-.result-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.8);;margin-bottom:.3rem}
+.result-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.8);margin-bottom:.3rem}
 .result-num{font-size:2.2rem;font-weight:700;color:#fff}
-.result-sub{font-size:.78rem;color:rgba(255,255,255,.85);;margin-top:.2rem}
-.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:.75rem}
-.tier{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:.5rem .3rem;text-align:center;transition:border-color .2s,background .2s}
-.tier.active{border-color:var(--accent);background:#fff3e8}
+.result-sub{font-size:.73rem;color:rgba(255,255,255,.85);margin-top:.25rem}
+.tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;margin-bottom:.75rem}
+.tier{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:.5rem .25rem;text-align:center;transition:border-color .2s,background .2s}
 .tier.recommended{border-color:var(--accent);background:var(--accent)}
-.tier-kw{font-size:.82rem;font-weight:700;}
+.tier-kw{font-size:.78rem;font-weight:700}
 .tier.recommended .tier-kw{color:#fff}
-.tier-label{font-size:.6rem;;color:var(--muted);margin-top:.15rem}
-.tier.recommended .tier-label{color:rgba(255,255,255,.85)}
-.info-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.78rem;;color:var(--ink);line-height:1.5}
+.tier-label{font-size:.58rem;color:var(--muted);margin-top:.15rem}
+.tier.recommended .tier-label{color:rgba(255,255,255,.9)}
+.info-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.76rem;color:var(--ink);line-height:1.6}
 .info-box b{color:var(--accent)}
-footer{text-align:center;font-size:.68rem;color:var(--muted);;margin-top:.5rem}
+.formula{font-size:.68rem;color:var(--muted);text-align:center;margin-top:.5rem;line-height:1.5}
+footer{text-align:center;font-size:.68rem;color:var(--muted);margin-top:.5rem}
 @media(max-width:420px){.grid{grid-template-columns:1fr}.tiers{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
 <span class="label">Calculadora de potencia óptima</span>
+<p class="hint">Marca los electrodomésticos que <strong>tienes en casa</strong>. La calculadora aplica el factor de simultaneidad estándar del sector (0,3) para estimar la potencia real que necesitas.</p>
 
 <div class="card">
-  <div class="card-title">Marca los aparatos que tienes en casa</div>
+  <div class="card-title">¿Qué tienes en casa?</div>
   <div class="grid" id="appGrid"></div>
 </div>
 
 <div class="result">
-  <div class="result-label">Potencia pico estimada</div>
-  <div class="result-num" id="rPico">0 W</div>
+  <div class="result-label">Potencia recomendada</div>
+  <div class="result-num" id="rPotencia">— kW</div>
   <div class="result-sub" id="rSub">Selecciona tus electrodomésticos</div>
 </div>
 
@@ -67,26 +68,28 @@ footer{text-align:center;font-size:.68rem;color:var(--muted);;margin-top:.5rem}
   <div class="info-box" id="infoBox">Selecciona tus electrodomésticos para ver la recomendación.</div>
 </div>
 
-<footer>Estimación orientativa · El ICP salta si superas la potencia contratada</footer>
+<a href="https://roams.es" target="_blank" rel="noopener" style="display:block;text-align:center;background:var(--accent);color:#fff;font-family:'Montserrat',sans-serif;font-size:.78rem;font-weight:700;text-decoration:none;padding:.7rem 1.5rem;border-radius:8px;margin:.75rem 0 .5rem;letter-spacing:.03em;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Revisamos tu factura →</a>
+<p class="formula">Fórmula: suma de potencias × 0,3 + 1 kW base · Fuente: IDAE / Iberdrola</p>
 
 <script>
+// Potencias nominales según IDAE e Iberdrola
 var appliances=[
-  {name:'Inducción',w:7400,icon:'🍳'},
-  {name:'Vitrocerámica',w:4000,icon:'🔥'},
-  {name:'Horno eléctrico',w:2200,icon:'🫙'},
-  {name:'Microondas',w:1200,icon:'📦'},
-  {name:'Lavadora',w:2200,icon:'🫧'},
-  {name:'Secadora',w:2500,icon:'💨'},
-  {name:'Lavavajillas',w:2200,icon:'🍽️'},
-  {name:'Aire acondicionado',w:2000,icon:'❄️'},
-  {name:'Bomba de calor',w:3000,icon:'🌡️'},
-  {name:'Calefacción eléc.',w:2000,icon:'♨️'},
-  {name:'Termo eléctrico',w:2000,icon:'🚿'},
-  {name:'Cargador VE',w:7400,icon:'🔌'},
-  {name:'Plancha',w:2400,icon:'👔'},
-  {name:'Aspirador',w:1800,icon:'🧹'},
-  {name:'TV + ordenador',w:500,icon:'🖥️'},
-  {name:'Frigorífico',w:150,icon:'🧊'},
+  {name:'Inducción',        w:3500, icon:'🍳'},
+  {name:'Vitrocerámica',    w:2000, icon:'🔥'},
+  {name:'Horno eléctrico',  w:2000, icon:'🫙'},
+  {name:'Microondas',       w:1200, icon:'📦'},
+  {name:'Lavadora',         w:2000, icon:'🫧'},
+  {name:'Secadora',         w:2500, icon:'💨'},
+  {name:'Lavavajillas',     w:2000, icon:'🍽️'},
+  {name:'Aire acond.',      w:1500, icon:'❄️'},
+  {name:'Bomba de calor',   w:2000, icon:'🌡️'},
+  {name:'Calef. eléctrica', w:2000, icon:'♨️'},
+  {name:'Termo eléctrico',  w:2000, icon:'🚿'},
+  {name:'Cargador VE',      w:3700, icon:'🔌'},
+  {name:'Frigorífico',      w:350,  icon:'🧊'},
+  {name:'Plancha',          w:2000, icon:'👔'},
+  {name:'Aspirador',        w:1200, icon:'🧹'},
+  {name:'TV + ordenador',   w:300,  icon:'🖥️'},
 ];
 var tiers=[2.3,3.45,4.6,5.75,6.9,8.05,9.2,10.35,11.5,13.8];
 var checked={};
@@ -97,42 +100,42 @@ appliances.forEach(function(a,i){
   div.className='item';
   div.innerHTML='<span class="item-icon">'+a.icon+'</span><span class="item-info"><span class="item-name">'+a.name+'</span><span class="item-w">'+a.w.toLocaleString('es-ES')+' W</span></span><span class="check"></span>';
   div.addEventListener('click',function(){
-    var val=!checked[i];
-    checked[i]=val;
-    div.classList.toggle('checked',val);
+    checked[i]=!checked[i];
+    div.classList.toggle('checked',checked[i]);
     calc();
   });
   grid.appendChild(div);
 });
 
 function calc(){
-  var sel=appliances.filter(function(a,i){return checked[i];});
-  if(!sel.length){
-    document.getElementById('rPico').textContent='0 W';
+  var total=0;
+  appliances.forEach(function(a,i){if(checked[i])total+=a.w;});
+  // Fórmula estándar del sector: suma × factor simultaneidad (0.3) + 1kW base
+  var recomendada=total*0.3+1000;
+  var kw=recomendada/1000;
+  var rec=-1;
+  for(var t=0;t<tiers.length;t++){if(tiers[t]>=kw){rec=t;break;}}
+  if(rec===-1)rec=tiers.length-1;
+
+  var sel=Object.values(checked).filter(Boolean).length;
+  if(!sel){
+    document.getElementById('rPotencia').textContent='— kW';
     document.getElementById('rSub').textContent='Selecciona tus electrodomésticos';
     document.getElementById('infoBox').textContent='Selecciona tus electrodomésticos para ver la recomendación.';
     renderTiers(-1);return;
   }
-  // Peak: sum of top consumers (simulate simultaneous use)
-  // Sort by wattage desc, take realistic simultaneous peak
-  var sorted=sel.slice().sort(function(a,b){return b.w-a.w;});
-  // Assume max 3 high-power appliances simultaneous + always-on
-  var peak=0;
-  sorted.forEach(function(a,i){
-    if(i<4)peak+=a.w;
-    else peak+=a.w*0.1; // background probability
-  });
-  peak=Math.round(peak*1.1); // 10% safety margin
-  var kw=peak/1000;
-  var rec=-1;
-  for(var t=0;t<tiers.length;t++){if(tiers[t]>=kw){rec=t;break;}}
-  if(rec===-1)rec=tiers.length-1;
-  document.getElementById('rPico').textContent=peak.toLocaleString('es-ES')+' W';
-  document.getElementById('rSub').textContent='Con margen de seguridad del 10%';
+
+  document.getElementById('rPotencia').textContent=tiers[rec]+' kW';
+  document.getElementById('rSub').textContent='Demanda estimada: '+Math.round(recomendada).toLocaleString('es-ES')+' W';
   renderTiers(rec);
-  var saving=rec>0?((tiers[rec-1]<kw)?'Ya tienes la potencia mínima recomendada.':'Podrías bajar al tramo anterior y ahorrar en el término de potencia.'):'';
-  document.getElementById('infoBox').innerHTML='Te recomendamos contratar <b>'+tiers[rec]+' kW</b>. '+
-    (rec>0?'Si rara vez usas todos los aparatos a la vez, considera <b>'+tiers[rec-1]+' kW</b> y ahorrar en el término fijo de tu factura.':'Con tu equipamiento necesitas la máxima potencia disponible en tarifa doméstica.');
+
+  var info='Te recomendamos contratar <b>'+tiers[rec]+' kW</b>. ';
+  if(rec>0){
+    info+='Si tu uso es moderado y rara vez coinciden varios aparatos a la vez, con <b>'+tiers[rec-1]+' kW</b> podrías ahorrar en el término fijo de tu factura.';
+  } else {
+    info+='Es el tramo mínimo para tu equipamiento básico.';
+  }
+  document.getElementById('infoBox').innerHTML=info;
 }
 
 function renderTiers(rec){
@@ -141,7 +144,7 @@ function renderTiers(rec){
   tiers.forEach(function(t,i){
     var d=document.createElement('div');
     d.className='tier'+(i===rec?' recommended':'');
-    d.innerHTML='<div class="tier-kw">'+t+' kW</div><div class="tier-label">'+(i===rec?'✓ Recomendada':'')+'</div>';
+    d.innerHTML='<div class="tier-kw">'+t+' kW</div><div class="tier-label">'+(i===rec?'✓ Ideal':'')+'</div>';
     g.appendChild(d);
   });
 }
