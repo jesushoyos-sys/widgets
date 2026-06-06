@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Qué tipo de seguro te conviene?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!--
+    WIDGET v2 — "¿Qué tipo de seguro te conviene?"
+    Para embeber en tu web incluye únicamente:
+      1. El bloque <style>
+      2. El <div id="wseg-wizard"> y su contenido
+      3. El bloque <script>
+    El estilo de <body> es solo para previsualización.
+  -->
+
+  <style>
+    /* ── RESET SCOPED ─────────────────────────────────── */
+    #wseg-wizard, #wseg-wizard * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    /* ── TOKENS ───────────────────────────────────────── */
+    #wseg-wizard {
+      --w0:  #ffffff;
+      --w1:  #f8f8f8;
+      --w2:  #f1f1f1;
+      --w3:  #e6e6e6;
+      --w4:  #d0d0d0;
+      --w5:  #aaaaaa;
+      --w6:  #666666;
+      --w7:  #3a3a3a;
+      --w8:  #1a1a1a;
+      --w9:  #0f0f0f;
+      --r-sm: 8px;
+      --r-md: 12px;
+      --r-lg: 18px;
+      --t: 0.22s ease;
+      --shadow: 0 2px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    /* ── CONTENEDOR ───────────────────────────────────── */
+    #wseg-wizard {
+      width: 100%;
+      max-width: 560px;
+      background: var(--w1);
+      border: 1px solid var(--w3);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      color: var(--w9);
+      overflow: hidden;
+    }
+
+    /* ── CABECERA ─────────────────────────────────────── */
+    .wseg-head {
+      padding: 24px 36px 18px;
+      background: var(--w0);
+      border-bottom: 1px solid var(--w3);
+    }
+
+    .wseg-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--w5);
+      margin-bottom: 5px;
+    }
+
+    .wseg-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--w9);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 18px;
+    }
+
+    .wseg-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .wseg-progress-track {
+      flex: 1;
+      height: 2px;
+      background: var(--w3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .wseg-progress-fill {
+      height: 100%;
+      background: var(--w8);
+      border-radius: 2px;
+      transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+      width: 20%;
+    }
+
+    .wseg-progress-label {
+      font-size: 11px;
+      color: var(--w5);
+      white-space: nowrap;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ── CUERPO ───────────────────────────────────────── */
+    .wseg-body {
+      padding: 26px 36px 0;
+      min-height: 345px;
+    }
+
+    .wseg-step { display: none; }
+
+    .wseg-step.wseg-active {
+      display: block;
+      animation: wsegIn 0.28s ease;
+    }
+
+    @keyframes wsegIn {
+      from { opacity: 0; transform: translateX(8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .wseg-step-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--w4);
+      margin-bottom: 7px;
+    }
+
+    .wseg-step-q {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--w9);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      margin-bottom: 18px;
+    }
+
+    /* ── OPCIONES ─────────────────────────────────────── */
+    .wseg-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .wseg-opts.wseg-grid2 {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .wseg-opts.wseg-grid2 .wseg-opt {
+      flex: 1 1 calc(50% - 4px);
+    }
+
+    .wseg-opt {
+      padding: 13px 16px;
+      background: var(--w2);
+      border: 1.5px solid var(--w3);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      transition: background var(--t), border-color var(--t), color var(--t), transform 0.15s ease;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--w7);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+    }
+
+    .wseg-opt:hover:not(.wseg-sel) {
+      background: var(--w3);
+      border-color: var(--w4);
+      transform: translateY(-1px);
+    }
+
+    .wseg-opt.wseg-sel {
+      background: var(--w9);
+      border-color: var(--w9);
+      color: var(--w0);
+    }
+
+    /* Opción "no lo sé" — visualmente diferenciada */
+    .wseg-opt.wseg-opt-skip {
+      background: var(--w1);
+      border-style: dashed;
+      border-color: var(--w4);
+      color: var(--w6);
+    }
+
+    .wseg-opt.wseg-opt-skip:hover:not(.wseg-sel) {
+      background: var(--w2);
+      border-color: var(--w5);
+      color: var(--w8);
+      transform: none;
+    }
+
+    .wseg-opt.wseg-opt-skip.wseg-sel {
+      background: var(--w7);
+      border-style: solid;
+      border-color: var(--w7);
+      color: var(--w0);
+    }
+
+    .wseg-opt-main {
+      font-size: 13.5px;
+      font-weight: 500;
+      display: block;
+    }
+
+    .wseg-opt-sub {
+      font-size: 11.5px;
+      opacity: 0.62;
+      display: block;
+    }
+
+    /* Separador entre opciones principales y "no lo sé" */
+    .wseg-skip-sep {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 2px 0;
+    }
+
+    .wseg-skip-sep::before,
+    .wseg-skip-sep::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--w3);
+    }
+
+    .wseg-skip-sep span {
+      font-size: 11px;
+      color: var(--w4);
+    }
+
+    /* ── NAVEGACIÓN ───────────────────────────────────── */
+    .wseg-nav {
+      padding: 16px 36px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wseg-btn-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12.5px;
+      color: var(--w5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px 0;
+      margin: 0;
+      transition: color var(--t);
+    }
+
+    .wseg-btn-back:hover { color: var(--w8); }
+    .wseg-btn-back.wseg-invisible { visibility: hidden; }
+
+    .wseg-btn-next {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--w0);
+      background: var(--w9);
+      border: none;
+      border-radius: var(--r-sm);
+      padding: 10px 22px;
+      margin: 0;
+      cursor: pointer;
+      transition: background var(--t);
+    }
+
+    .wseg-btn-next:disabled {
+      background: var(--w4);
+      cursor: not-allowed;
+    }
+
+    .wseg-btn-next:not(:disabled):hover { background: var(--w7); }
+
+    /* ── RESULTADO ────────────────────────────────────── */
+    .wseg-result {
+      display: none;
+      padding: 28px 36px 26px;
+      animation: wsegUp 0.38s ease;
+    }
+
+    .wseg-result.wseg-show {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    @keyframes wsegUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tag: centrado, sin fondo */
+    .wseg-result-tag {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--w5);
+      text-align: center;
+      margin-bottom: -6px; /* compensa gap entre tag y heading */
+    }
+
+    /* Heading: centrado, DM Sans */
+    .wseg-result-heading {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 23px;
+      font-weight: 600;
+      color: var(--w9);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    /* Descripción eliminada — fusionada en el bloque "¿Por qué?" */
+
+    /* "¿Por qué?": fondo suave para distinguirlo de la descripción */
+    .wseg-result-reason {
+      background: var(--w2);
+      border-radius: var(--r-sm);
+      padding: 14px 16px;
+    }
+
+    .wseg-result-reason p {
+      font-size: 13px;
+      color: var(--w6);
+      line-height: 1.65;
+    }
+
+    .wseg-result-reason strong {
+      color: var(--w8);
+      font-weight: 500;
+    }
+
+    /* Nota "no lo sé" */
+    .wseg-value-note {
+      background: var(--w2);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+    }
+
+    .wseg-value-note p {
+      font-size: 11.5px;
+      color: var(--w5);
+      line-height: 1.6;
+    }
+
+    .wseg-value-note a { color: var(--w7); text-decoration: underline; }
+
+    /* ── BLOQUE CONVERSIÓN ROAMS ────────────────────── */
+    .wseg-conversion {
+      background: var(--w0);
+      border: 1px solid var(--w3);
+      border-radius: var(--r-md);
+      padding: 16px 18px 18px;
+      margin-top: 6px;
+    }
+
+    .wseg-conv-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--w5);
+      margin-bottom: 10px;
+    }
+
+    .wseg-conv-sub {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--w5);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .wseg-cta-a {
+      display: block;
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--w0);
+      background: var(--w9);
+      text-decoration: none;
+      border: none;
+      border-radius: var(--r-sm);
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background var(--t);
+      text-align: center;
+    }
+
+    .wseg-cta-a:hover { background: var(--w7); }
+
+    .wseg-restart {
+      display: block;
+      font-size: 11.5px;
+      color: var(--w5);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: color var(--t);
+      text-align: center;
+      width: 100%;
+    }
+
+    .wseg-restart:hover { color: var(--w7); }
+
+    /* ── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 480px) {
+      .wseg-head, .wseg-body, .wseg-nav { padding-left: 20px; padding-right: 20px; }
+      .wseg-title   { font-size: 17px; }
+      .wseg-step-q  { font-size: 16px; }
+      .wseg-opts.wseg-grid2 .wseg-opt { flex: 1 1 100%; }
+      .wseg-result  { padding: 22px 20px 20px; }
+      .wseg-result-heading { font-size: 21px; }
+      .wseg-conversion { padding: 16px; }
+    }
+  </style>
+</head>
+<body style="background:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;font-family:sans-serif;">
+
+<!-- ── WIDGET: empieza aquí al embeber ─────────────────────────── -->
+<div id="wseg-wizard">
+
+  <!-- CABECERA -->
+  <div class="wseg-head">
+    <p class="wseg-eyebrow">Seguro de coche</p>
+    <h2 class="wseg-title">¿Qué tipo de seguro te conviene?</h2>
+    <div class="wseg-progress-row">
+      <div class="wseg-progress-track">
+        <div class="wseg-progress-fill" id="wsegFill"></div>
+      </div>
+      <span class="wseg-progress-label" id="wsegLabel">Pregunta 1 / 5</span>
+    </div>
+  </div>
+
+  <!-- PREGUNTAS -->
+  <div class="wseg-body" id="wsegBody">
+
+    <!-- P1: Valor de mercado -->
+    <div class="wseg-step wseg-active" data-step="1">
+      <p class="wseg-step-label">Pregunta 1 de 5</p>
+      <h3 class="wseg-step-q">¿Cuánto vale tu coche actualmente en el mercado?</h3>
+      <div class="wseg-opts" id="wseg-opts-1">
+        <button class="wseg-opt" data-val="bajo">
+          <span class="wseg-opt-main">Menos de 5.000 €</span>
+          <span class="wseg-opt-sub">Coche de poco valor residual</span>
+        </button>
+        <button class="wseg-opt" data-val="medio">
+          <span class="wseg-opt-main">Entre 5.000 y 15.000 €</span>
+          <span class="wseg-opt-sub">Gama media de segunda mano</span>
+        </button>
+        <button class="wseg-opt" data-val="alto">
+          <span class="wseg-opt-main">Más de 15.000 €</span>
+          <span class="wseg-opt-sub">Coche nuevo o de alto valor</span>
+        </button>
+        <div class="wseg-skip-sep"><span>o si no lo sabes</span></div>
+        <button class="wseg-opt wseg-opt-skip" data-val="no_se">
+          <span class="wseg-opt-main">No lo sé</span>
+          <span class="wseg-opt-sub">Puedes continuar sin esta información</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- P2: Financiación -->
+    <div class="wseg-step" data-step="2">
+      <p class="wseg-step-label">Pregunta 2 de 5</p>
+      <h3 class="wseg-step-q">¿Está financiado, en leasing o en renting?</h3>
+      <div class="wseg-opts" id="wseg-opts-2">
+        <button class="wseg-opt" data-val="leasing_renting">
+          <span class="wseg-opt-main">Sí, en leasing o renting</span>
+          <span class="wseg-opt-sub">La aseguradora es la empresa o el banco</span>
+        </button>
+        <button class="wseg-opt" data-val="prestamo">
+          <span class="wseg-opt-main">Sí, con préstamo bancario</span>
+          <span class="wseg-opt-sub">Lo compré a plazos con financiación</span>
+        </button>
+        <button class="wseg-opt" data-val="propio">
+          <span class="wseg-opt-main">No, es de mi propiedad</span>
+          <span class="wseg-opt-sub">Pagado al contado o sin carga</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- P3: Perfil conductor -->
+    <div class="wseg-step" data-step="3">
+      <p class="wseg-step-label">Pregunta 3 de 5</p>
+      <h3 class="wseg-step-q">¿El conductor principal es joven o novel?</h3>
+      <div class="wseg-opts wseg-grid2" id="wseg-opts-3">
+        <button class="wseg-opt" data-val="si">
+          <span class="wseg-opt-main">Sí</span>
+          <span class="wseg-opt-sub">Menor de 25 años o menos de 2 años con el carnet</span>
+        </button>
+        <button class="wseg-opt" data-val="no">
+          <span class="wseg-opt-main">No</span>
+          <span class="wseg-opt-sub">Mayor de 25 años y más de 2 años conduciendo</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- P4: Kilómetros anuales -->
+    <div class="wseg-step" data-step="4">
+      <p class="wseg-step-label">Pregunta 4 de 5</p>
+      <h3 class="wseg-step-q">¿Cuántos kilómetros recorres al año aproximadamente?</h3>
+      <div class="wseg-opts" id="wseg-opts-4">
+        <button class="wseg-opt" data-val="bajo">
+          <span class="wseg-opt-main">Menos de 8.000 km</span>
+          <span class="wseg-opt-sub">Uso bajo o esporádico</span>
+        </button>
+        <button class="wseg-opt" data-val="medio">
+          <span class="wseg-opt-main">Entre 8.000 y 20.000 km</span>
+          <span class="wseg-opt-sub">Uso moderado, para el día a día</span>
+        </button>
+        <button class="wseg-opt" data-val="alto">
+          <span class="wseg-opt-main">Más de 20.000 km</span>
+          <span class="wseg-opt-sub">Uso intensivo, viajes frecuentes</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- P5: Entorno de circulación -->
+    <div class="wseg-step" data-step="5">
+      <p class="wseg-step-label">Pregunta 5 de 5</p>
+      <h3 class="wseg-step-q">¿Circula principalmente por ciudad?</h3>
+      <div class="wseg-opts wseg-grid2" id="wseg-opts-5">
+        <button class="wseg-opt" data-val="si">
+          <span class="wseg-opt-main">Sí, casi siempre por ciudad</span>
+          <span class="wseg-opt-sub">Tráfico, atascos, aparcamiento en calle…</span>
+        </button>
+        <button class="wseg-opt" data-val="no">
+          <span class="wseg-opt-main">No, carretera o uso mixto</span>
+          <span class="wseg-opt-sub">Autopistas, vías secundarias…</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESULTADO (se renderiza por JS) -->
+  <div class="wseg-result" id="wsegResult"></div>
+
+  <!-- NAVEGACIÓN -->
+  <div class="wseg-nav" id="wsegNav">
+    <button class="wseg-btn-back wseg-invisible" id="wsegBack">← Anterior</button>
+    <button class="wseg-btn-next" id="wsegNext" disabled>Siguiente →</button>
+  </div>
+
+</div>
+<!-- ── FIN WIDGET ──────────────────────────────────────────────── -->
+
+<script>
+(function () {
+  const TOTAL = 5;
+  let step = 1;
+  const ans = {};
+
+  // ── DOM ──────────────────────────────────────────────────────────
+  const fill   = document.getElementById('wsegFill');
+  const label  = document.getElementById('wsegLabel');
+  const body   = document.getElementById('wsegBody');
+  const result = document.getElementById('wsegResult');
+  const nav    = document.getElementById('wsegNav');
+  const btnBk  = document.getElementById('wsegBack');
+  const btnNx  = document.getElementById('wsegNext');
+
+  // ── Datos de resultado ───────────────────────────────────────────
+  const DATA = {
+    'todo-riesgo': {
+      tag:  'Máxima protección',
+      head: 'Seguro a Todo Riesgo',
+      why:  'El valor de tu coche, la financiación activa o tu perfil de conductor hacen que los daños propios sean un riesgo económico real. El todo riesgo cubre daños propios, robo, cristales y asistencia, sin importar quién tenga la culpa.'
+    },
+    'ampliado': {
+      tag:  'El equilibrio perfecto',
+      head: 'Terceros Ampliado',
+      why:  'Tu perfil apunta a un riesgo moderado: hay factores que justifican ir más allá del mínimo legal. El terceros ampliado añade robo, incendio y lunas al precio justo, sin llegar al coste del todo riesgo.'
+    },
+    'terceros': {
+      tag:  'Lo justo para ti',
+      head: 'Seguro de Terceros',
+      why:  'El valor actual de tu coche es bajo en relación al coste de coberturas adicionales. El seguro de terceros cumple con la normativa y cubre lo esencial sin que compense económicamente pagar por más.'
+    }
+  };
+
+  // ── Lógica de recomendación ──────────────────────────────────────
+  //
+  //  Variables:
+  //    value    → 'bajo' | 'medio' | 'alto' | 'no_se'
+  //    financed → 'leasing_renting' | 'prestamo' | 'propio'
+  //    young    → 'si' | 'no'
+  //    km       → 'bajo' | 'medio' | 'alto'
+  //    urban    → 'si' | 'no'
+  //
+  //  Cuando value = 'no_se': se ignora el valor y se pondera el resto.
+  //  Nunca se recomienda 'terceros' con valor desconocido (precaución).
+
+  function recommend() {
+    const { value, financed, young, km, urban } = ans;
+
+    // 1. Leasing/renting → siempre todo riesgo (obligación contractual)
+    if (financed === 'leasing_renting') return 'todo-riesgo';
+
+    // 2. Coche de alto valor → siempre todo riesgo
+    if (value === 'alto') return 'todo-riesgo';
+
+    // 3. Préstamo bancario + coche no barato → todo riesgo
+    //    (incluye valor desconocido: no sabemos si es barato, así que cubrimos)
+    if (financed === 'prestamo' && value !== 'bajo') return 'todo-riesgo';
+
+    // 4. Coche de bajo valor (<5k)
+    if (value === 'bajo') {
+      // Con préstamo: ampliado como compromiso (posible obligación contractual)
+      if (financed === 'prestamo') return 'ampliado';
+      // Conductor de riesgo alto o uso urbano intensivo → ampliado
+      if (young === 'si' || (km === 'alto' && urban === 'si')) return 'ampliado';
+      // Bajo valor + sin financiación + perfil normal → terceros
+      return 'terceros';
+    }
+
+    // 5. Coche de valor medio (5k–15k) sin financiación forzosa
+    if (value === 'medio') {
+      if (young === 'si') return 'todo-riesgo';
+      if (km === 'alto' && urban === 'si') return 'todo-riesgo';
+      return 'ampliado';
+    }
+
+    // 6. Valor desconocido (no_se) — solo factores de riesgo conductor/uso
+    //    Nunca baja a 'terceros': si el coche vale más de lo esperado,
+    //    la recomendación mínima tiene que cubrir lo esencial.
+    if (young === 'si' && km !== 'bajo') return 'todo-riesgo';
+    if (young === 'si' || km === 'alto' || urban === 'si') return 'ampliado';
+    return 'ampliado'; // default conservador cuando no se conoce el valor
+
+  }
+
+  // ── Renderizar resultado ─────────────────────────────────────────
+  function showResult() {
+    const key = recommend();
+    const d   = DATA[key];
+    const unknownValue = ans.value === 'no_se';
+
+    const valueNote = unknownValue ? `
+      <div class="wseg-value-note">
+        <p>
+          <strong>Recomendación basada en tu perfil de uso</strong>, ya que no conocemos
+          el valor de tu coche. Para afinarla, puedes consultar el precio de mercado en
+          portales como <a href="https://www.autoscout24.es" target="_blank">Autoscout24</a>
+          o <a href="https://www.coches.net" target="_blank">Coches.net</a> y volver a hacer el test.
+        </p>
+      </div>` : '';
+
+    result.innerHTML = `
+      <span class="wseg-result-tag">${d.tag}</span>
+      <h3 class="wseg-result-heading">${d.head}</h3>
+      <div class="wseg-result-reason">
+        <p><strong>¿Por qué te lo recomendamos?</strong> ${d.why}</p>
+      </div>
+      ${valueNote}
+      <div class="wseg-conversion">
+        <p class="wseg-conv-eyebrow">Roams · Correduría de seguros</p>
+        <p class="wseg-conv-sub">Gestores independientes con acceso a decenas de aseguradoras. Sin compromiso ni coste adicional.</p>
+        <a href="URL_GESTOR_ROAMS" class="wseg-cta-a">Hablar con un gestor de Roams →</a>
+      </div>
+      <button class="wseg-restart" onclick="wsegRestart()">← Volver a empezar</button>
+    `;
+
+    fill.style.width  = '100%';
+    label.textContent = 'Completado';
+    body.style.display = 'none';
+    nav.style.display  = 'none';
+    result.classList.add('wseg-show');
+  }
+
+  // ── Reiniciar ────────────────────────────────────────────────────
+  window.wsegRestart = function () {
+    step = 1;
+    Object.keys(ans).forEach(k => delete ans[k]);
+    document.querySelectorAll('#wseg-wizard .wseg-opt').forEach(o => o.classList.remove('wseg-sel'));
+    result.classList.remove('wseg-show');
+    body.style.display = '';
+    nav.style.display  = '';
+    update();
+  };
+
+  // ── Selección de opciones ────────────────────────────────────────
+  const keys = [null, 'value', 'financed', 'young', 'km', 'urban'];
+
+  document.querySelectorAll('#wseg-wizard .wseg-opts').forEach(group => {
+    group.addEventListener('click', e => {
+      const opt = e.target.closest('.wseg-opt');
+      if (!opt) return;
+      group.querySelectorAll('.wseg-opt').forEach(o => o.classList.remove('wseg-sel'));
+      opt.classList.add('wseg-sel');
+      ans[keys[step]] = opt.dataset.val;
+      btnNx.disabled = false;
+    });
+  });
+
+  // ── Actualizar UI ────────────────────────────────────────────────
+  function update() {
+    fill.style.width  = (step / TOTAL * 100) + '%';
+    label.textContent = `Pregunta ${step} / ${TOTAL}`;
+
+    document.querySelectorAll('#wseg-wizard .wseg-step').forEach(s => {
+      s.classList.toggle('wseg-active', +s.dataset.step === step);
+    });
+
+    btnNx.disabled    = !ans[keys[step]];
+    btnNx.textContent = step === TOTAL ? 'Ver resultado →' : 'Siguiente →';
+    btnBk.classList.toggle('wseg-invisible', step === 1);
+  }
+
+  // ── Navegación ───────────────────────────────────────────────────
+  btnNx.addEventListener('click', () => {
+    if (step < TOTAL) { step++; update(); }
+    else              { showResult(); }
+  });
+
+  btnBk.addEventListener('click', () => {
+    if (step > 1) { step--; update(); }
+  });
+
+  update();
+})();
+</script>
+
+</body>
+</html>
